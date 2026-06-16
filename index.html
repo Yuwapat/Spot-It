@@ -401,6 +401,7 @@
   measurementId: "G-SX6MF1XH1D"
 };
 
+
     let auth, db;
     let isMockDatabase = false;
 
@@ -631,10 +632,6 @@
           if (snapshot.exists) {
             const data = snapshot.data();
             setRoomData(data);
-            
-            if (role === 'player' && data.status === 'playing') {
-              setFoundSpots(data.foundSpotsByPlayers?.[user.uid] || []);
-            }
           } else {
             if (role === 'player') {
               setErrorMsg('ไม่พบห้องเล่นเกมนี้ หรือห้องถูกปิดแล้ว');
@@ -657,8 +654,13 @@
 
           if (role === 'player') {
             const me = filtered.find(p => p.id === user.uid);
-            if (me && me.team) {
-              setMyTeam(me.team);
+            if (me) {
+              if (me.team) {
+                setMyTeam(me.team);
+              }
+              // STRICT BUG FIX 2: Synchronize found spots directly from database profile
+              // This prevents state override during room/admin snapshot updates!
+              setFoundSpots(me.foundSpots || []);
             }
           }
         }, (err) => {
@@ -670,6 +672,19 @@
           unsubscribePlayers();
         };
       }, [user, roomCode, role]);
+
+      // STRICT BUG FIX 1: Reset markers and spots when admin advances the question index
+      useEffect(() => {
+        if (role === 'player' && roomData) {
+          setClickMarkers([]);
+          setFoundSpots([]);
+          
+          // Clear player's foundSpots record in database as well to start with 0
+          db.doc(`artifacts/${appId}/public/data/players/${user.uid}`).update({
+            foundSpots: []
+          }).catch(e => console.warn("Failed resetting DB found spots:", e));
+        }
+      }, [roomData?.currentQuestionIdx, role]);
 
       // Team synchronization on end
       useEffect(() => {
@@ -847,6 +862,7 @@
             name: playerName.trim(),
             score: 0,
             team: '',
+            foundSpots: [],
             joinedAt: Date.now()
           });
 
@@ -892,7 +908,12 @@
 
             const playerDocRef = db.doc(`artifacts/${appId}/public/data/players/${user.uid}`);
             const currentScore = playersList.find(p => p.id === user.uid)?.score || 0;
-            await playerDocRef.update({ score: currentScore + 100 });
+            
+            // STRICT BUG FIX 2.1: Write foundSpots directly to DB so real-time updates do not reset it to 0
+            await playerDocRef.update({ 
+              score: currentScore + 100,
+              foundSpots: updatedSpots
+            });
           }
         } else {
           playSound('wrong');
@@ -953,7 +974,7 @@
                 onClick={handleResetGame}
                 className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow-md flex items-center gap-1"
               >
-                ออกจากเกม
+                🚪 ออกจากเกม
               </button>
             )}
           </header>
@@ -974,16 +995,16 @@
                   <div className="bg-[#013220] border-4 border-emerald-700 rounded-3xl p-8 flex flex-col justify-between shadow-2xl text-white">
                     <div className="text-center flex flex-col items-center">
                       <span className="text-7xl block mb-6 animate-gentle-bounce select-none pointer-events-none">🖥️</span>
-                      <h2 className="text-3xl font-bold text-yellow-300 mb-3">สำหรับแอดมิน</h2>
+                      <h2 className="text-3xl font-bold text-yellow-300 mb-3">หน้าจอแอดมิน</h2>
                       <p className="text-sm text-green-100 mb-6 leading-relaxed">
-                        สร้างห้องสำหรับเล่นเกมจับผิดภาพกับเพื่อน ๆ ของคุณ!
+                        สร้างห้องควบคุมหลัก ฉายโปรเจกเตอร์หน้าห้อง เพื่อเล่นเกมกับเพื่อน ๆ ของคุณ!
                       </p>
                     </div>
                     <button
                       onClick={handleCreateRoom}
                       className="w-full bg-yellow-400 hover:bg-yellow-300 text-[#013220] py-4 rounded-2xl font-bold text-lg transition-all shadow-lg"
                     >
-                      🖥️ สร้างห้องควบคุมใหม่
+                      สร้างห้องควบคุมใหม่
                     </button>
                   </div>
                 )}
@@ -995,7 +1016,7 @@
                       <span className="text-7xl block mb-6 animate-gentle-bounce select-none pointer-events-none">📱</span>
                       <h2 className="text-3xl font-bold text-[#013220] mb-3">จอมือถือผู้เล่น</h2>
                       <p className="text-sm text-slate-600 mb-6 leading-relaxed">
-                        กรอกชื่อเล่นของคุณ และยืนยันพินห้องด้านล่างเพื่อเข้าล็อบบี้เตรียมจับผิดภาพ!
+                        กรอกชื่อเล่นของคุณ และยืนยันพินห้องด้านล่างเพื่อเข้าห้องรอล็อบบี้เตรียมจับผิดภาพ!
                       </p>
                     </div>
 
@@ -1122,23 +1143,23 @@
                     {/* Desktop/Admin Side-by-Side Cartoon Panels (Exactly like standard find the difference boards) */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
                       <div className="bg-[#FFFDF9] border-4 border-[#EADBC8] rounded-3xl p-4 shadow-xl flex flex-col items-center">
-                        <h4 className="text-md font-bold mb-2 text-[#013220]">ภาพที่ 1: ภาพต้นฉบับด่านเดิม (Original)</h4>
+                        <h4 className="text-md font-bold mb-2 text-[#013220]">ภาพที่ 1: ภาพต้นฉบับ (Original)</h4>
                         <div className="w-full max-w-md aspect-[4/3] bg-[#E8F9FF] rounded-2xl overflow-hidden border-2 border-slate-300">
                           {GAME_QUESTIONS[roomData.currentQuestionIdx].renderSvg(true, null, [], [])}
                         </div>
                       </div>
 
                       <div className="bg-[#FFFDF9] border-4 border-yellow-400 rounded-3xl p-4 shadow-xl flex flex-col items-center">
-                        <h4 className="text-md font-bold mb-2 text-yellow-600">ภาพที่ 2: ค้นหาความแตกต่างที่วาดไว้ซ่อน (Differences)</h4>
+                        <h4 className="text-md font-bold mb-2 text-yellow-600">ภาพที่ 2: ค้นหาความแตกต่างซ่อนไว้ (Differences)</h4>
                         <div className="w-full max-w-md aspect-[4/3] bg-[#E8F9FF] rounded-2xl overflow-hidden border-2 border-yellow-400">
-                          {GAME_QUESTIONS[roomData.currentQuestionIdx].renderSvg(false, null, playersList.flatMap(p => roomData.foundSpotsByPlayers?.[p.id] || []), [])}
+                          {GAME_QUESTIONS[roomData.currentQuestionIdx].renderSvg(false, null, playersList.flatMap(p => p.foundSpots || []), [])}
                         </div>
                       </div>
                     </div>
 
                     <div className="flex justify-between items-center p-4">
                       <p className="text-sm font-bold text-slate-600">
-                        👁️ ผู้เรียนกำลังมองหาจุดแตกต่างอยู่ขณะนี้!
+                        👁️ ผู้เล่นกำลังมองหาจุดแตกต่างอยู่ขณะนี้!
                       </p>
                       <button
                         onClick={handleAdminNextQuestion}
@@ -1151,7 +1172,7 @@
                     {/* Leaderboard */}
                     <div className="bg-[#FAF7F2] p-5 rounded-2xl border-2 border-[#EADBC8]">
                       <h4 className="text-md font-bold text-[#013220] mb-3 flex items-center gap-2">
-                        🏆 ตารางคะแนนผู้เล่นสด:
+                        🏆 ตารางคะแนนผู้เล่น:
                       </h4>
                       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                         {playersList.slice().sort((a,b) => b.score - a.score).map((p, idx) => (
@@ -1233,7 +1254,7 @@
                       onClick={handleResetGame}
                       className="bg-[#013220] text-white font-bold px-10 py-4 rounded-2xl text-lg hover:bg-emerald-800 transition shadow-lg inline-flex items-center gap-2"
                     >
-                      <span>เริ่มเล่นเกมใหม่</span>
+                      <span>เล่นเกมใหม่</span>
                     </button>
                   </div>
                 )}
@@ -1245,15 +1266,22 @@
             {role === 'player' && (
               <div className="max-w-md w-full bg-[#FFFDF9] border-4 border-[#EADBC8] rounded-3xl p-5 shadow-2xl flex flex-col justify-between min-h-[580px] relative text-slate-800">
                 
-                {/* HUD ของผู้เล่น */}
+                {/* STRICT BUG FIX 3: HUD ของผู้เล่น พร้อมนาฬิกานับถอยหลังเรียลไทม์ที่ซิงก์จากแอดมิน */}
                 <div className="bg-[#FAF7F2] p-3 rounded-2xl flex justify-between items-center text-xs border border-[#EADBC8] mb-4">
                   <span className="font-bold text-[#013220] flex items-center gap-1">
                     <span>{playerName.startsWith('ครู') ? '🎓' : '👤'}</span>
                     <span>{playerName || 'กำลังป้อนข้อมูล...'}</span>
                   </span>
-                  <span className="bg-yellow-400 text-[#013220] font-bold px-3 py-1 rounded-full shadow">
-                    {playersList.find(p => p.id === user.uid)?.score || 0} คะแนน
-                  </span>
+                  <div className="flex items-center gap-2">
+                    {roomData?.status === 'playing' && (
+                      <span className="bg-red-100 text-red-700 font-mono font-bold px-2.5 py-1 rounded-lg border border-red-200 animate-pulse flex items-center gap-1">
+                        ⏱️ {roomData.timeLeft}s
+                      </span>
+                    )}
+                    <span className="bg-yellow-400 text-[#013220] font-bold px-3 py-1 rounded-full shadow">
+                      {playersList.find(p => p.id === user.uid)?.score || 0} คะแนน
+                    </span>
+                  </div>
                 </div>
 
                 {/* ในกรณียังไม่มีห้อง หรือ หาห้องไม่พบ */}
@@ -1262,7 +1290,7 @@
                     <span className="text-6xl block animate-gentle-bounce select-none pointer-events-none">⚠️</span>
                     <h3 className="text-2xl font-bold text-[#013220]">ต้องการเข้าร่วมห้อง</h3>
                     <p className="text-sm text-slate-600 leading-relaxed">
-                      กรุณาป้อนรหัสพินห้องและชื่อเล่นของคุณอีกครั้ง หรือรอแอดมินเปิดห้องครับ
+                      กรุณาป้อนรหัสพินห้องและชื่อเล่นของคุณอีกครั้ง หรือรอกรรมการแอดมินเปิดระบบสัญญาณในห้องควบคุมหลักครับ
                     </p>
                     <div className="bg-[#FAF7F2] p-4 rounded-2xl border border-[#EADBC8] space-y-3">
                       <input
@@ -1296,7 +1324,7 @@
                       <span className="text-6xl block animate-gentle-bounce select-none pointer-events-none">⏳</span>
                       <h3 className="text-2xl font-bold text-[#013220]">เข้าร่วมห้องแล้ว!</h3>
                       <p className="text-sm text-slate-600">
-                        โปรดจ้องที่หน้าจอโปรเจกเตอร์หน้าห้อง แอดมินกำลังเตรียมกดเริ่มเกม...
+                        โปรดจ้องที่หน้าจอโปรเจกเตอร์หน้าห้อง เกมกำลังจะเริ่ม...
                       </p>
                     </div>
 
@@ -1323,7 +1351,7 @@
                       <div className="relative aspect-[4/3] w-full max-w-xs mx-auto rounded-2xl overflow-hidden border-4 border-slate-300 shadow bg-[#E8F9FF] shrink-0">
                         {GAME_QUESTIONS[roomData.currentQuestionIdx].renderSvg(true, null, [], [])}
                         <div className="absolute top-2 left-2 bg-black/70 text-[9px] text-white px-2 py-0.5 rounded-full font-bold z-10">
-                          1. ภาพต้นฉบับ
+                          1. ภาพต้นฉบับ (เปรียบเทียบ)
                         </div>
                       </div>
 
@@ -1331,7 +1359,7 @@
                       <div className="relative aspect-[4/3] w-full max-w-xs mx-auto rounded-2xl overflow-hidden border-4 border-yellow-400 shadow-2xl bg-[#E8F9FF] shrink-0">
                         <div className="absolute top-2 left-2 bg-yellow-400 text-[#013220] text-[9px] px-2 py-0.5 rounded-full font-bold z-10 flex items-center gap-1">
                           <span>👆</span>
-                          <span>2. หาความแตกต่าง 👇</span>
+                          <span>2. จิ้มความต่างที่ภาพ! 👇</span>
                         </div>
 
                         {GAME_QUESTIONS[roomData.currentQuestionIdx].renderSvg(
@@ -1378,7 +1406,7 @@
 
                       {!myTeam && (
                         <div className="bg-[#FAF7F2] p-6 rounded-3xl border border-[#EADBC8] animate-pulse text-slate-500 flex flex-col items-center gap-2">
-                          <span>⏳ กำลังแบ่งกลุ่ม...</span>
+                          <span>⏳ กำลังแบ่งทีม...</span>
                         </div>
                       )}
                     </div>
