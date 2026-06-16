@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>YeS Spot It! - เกมจับผิดภาพมัลติเพลเยอร์</title>
+  <title>YeS Spot It! - เกมจับผิดภาพ</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -978,7 +978,7 @@
                 onClick={handleResetGame}
                 className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow-md flex items-center gap-1"
               >
-                🚪 ออกจากเกม
+                ออกจากเกม
               </button>
             )}
           </header>
@@ -999,16 +999,16 @@
                   <div className="bg-[#013220] border-4 border-emerald-700 rounded-3xl p-8 flex flex-col justify-between shadow-2xl text-white">
                     <div className="text-center flex flex-col items-center">
                       <span className="text-7xl block mb-6 animate-gentle-bounce select-none pointer-events-none">🖥️</span>
-                      <h2 className="text-3xl font-bold text-yellow-300 mb-3">หน้าจอแอดมิน</h2>
+                      <h2 className="text-3xl font-bold text-yellow-300 mb-3">สำหรับสร้างห้อง</h2>
                       <p className="text-sm text-green-100 mb-6 leading-relaxed">
-                        สร้างห้องควบคุมหลัก ฉายโปรเจกเตอร์หน้าห้อง สลับจัดสรรทีมด้วยสัดส่วนผู้เล่น "ครู" ที่เท่ากันแบบเรียลไทม์!
+                        สร้างห้องควบคุมหลัก ฉายโปรเจกเตอร์หน้าห้อง และเล่นเกมจับผิดภาพกับเพื่อน ๆ ของคุณ!
                       </p>
                     </div>
                     <button
                       onClick={handleCreateRoom}
                       className="w-full bg-yellow-400 hover:bg-yellow-300 text-[#013220] py-4 rounded-2xl font-bold text-lg transition-all shadow-lg"
                     >
-                      🖥️ สร้างห้องควบคุมใหม่
+                      สร้างเกมใหม่
                     </button>
                   </div>
                 )}
@@ -1020,7 +1020,7 @@
                       <span className="text-7xl block mb-6 animate-gentle-bounce select-none pointer-events-none">📱</span>
                       <h2 className="text-3xl font-bold text-[#013220] mb-3">จอมือถือผู้เล่น</h2>
                       <p className="text-sm text-slate-600 mb-6 leading-relaxed">
-                        กรอกชื่อเล่นของคุณ และยืนยันพินห้องด้านล่างเพื่อเข้าห้องรอล็อบบี้เตรียมจับผิดภาพ!
+                        กรอกชื่อเล่นของคุณ และยืนยันพินห้องด้านล่างเพื่อเข้าล็อบบี้เตรียมจับผิดภาพ!
                       </p>
                     </div>
 
@@ -1046,7 +1046,7 @@
                       type="submit"
                       className="w-full bg-[#013220] hover:bg-[#0c4e34] text-white py-4 rounded-2xl font-bold text-lg transition-all shadow-lg flex items-center justify-center gap-2"
                     >
-                      🚪 เข้าร่วมล็อบบี้
+                      เข้าร่วมล็อบบี้
                     </button>
                   </form>
                 </div>
@@ -1078,7 +1078,7 @@
                       </p>
                       
                       <div className="space-y-1">
-                        <label className="text-[10px] text-green-400 font-bold block">🔗 แก้ไขลิงก์จริงของคุณตรงนี้:</label>
+                        <label className="text-[10px] text-green-400 font-bold block">🔗 แก้ไขลิงก์ของคุณตรงนี้:</label>
                         <input 
                           type="text"
                           value={customBaseUrl}
@@ -1122,7 +1122,7 @@
                       })}
                       {playersList.length === 0 && (
                         <div className="col-span-full text-center py-16 text-slate-400 text-lg animate-pulse flex flex-col items-center gap-2">
-                          <span>⏱️ รอผู้เล่นอื่นๆ สแกนพินเข้าร่วม...</span>
+                          <span>⏱️ รอผู้เล่นอื่น ๆ เข้าร่วมเกม...</span>
                         </div>
                       )}
                     </div>
@@ -1134,7 +1134,7 @@
                   <div className="space-y-6">
                     <div className="flex justify-between items-center bg-[#FAF7F2] border-2 border-[#EADBC8] p-4 rounded-2xl">
                       <div>
-                        <span className="text-xs text-slate-500 block">ภาพด่านปัจจุบัน</span>
+                        <span className="text-xs text-slate-500 block">ภาพปัจจุบัน</span>
                         <span className="text-2xl font-bold text-[#013220]">
                           ข้อ {roomData.currentQuestionIdx + 1}/3: {GAME_QUESTIONS[roomData.currentQuestionIdx].title}
                         </span>
@@ -1147,14 +1147,14 @@
                     {/* Desktop/Admin Side-by-Side Cartoon Panels (Exactly like standard find the difference boards) */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
                       <div className="bg-[#FFFDF9] border-4 border-[#EADBC8] rounded-3xl p-4 shadow-xl flex flex-col items-center">
-                        <h4 className="text-md font-bold mb-2 text-[#013220]">ภาพที่ 1: ภาพต้นฉบับด่านเดิม (Original)</h4>
+                        <h4 className="text-md font-bold mb-2 text-[#013220]">ภาพที่ 1: ภาพต้นฉบับ (Original)</h4>
                         <div className="w-full max-w-md aspect-[4/3] bg-[#E8F9FF] rounded-2xl overflow-hidden border-2 border-slate-300">
                           {GAME_QUESTIONS[roomData.currentQuestionIdx].renderSvg(true, null, [], [])}
                         </div>
                       </div>
 
                       <div className="bg-[#FFFDF9] border-4 border-yellow-400 rounded-3xl p-4 shadow-xl flex flex-col items-center">
-                        <h4 className="text-md font-bold mb-2 text-yellow-600">ภาพที่ 2: ค้นหาความแตกต่างที่วาดไว้ซ่อน (Differences)</h4>
+                        <h4 className="text-md font-bold mb-2 text-yellow-600">ภาพที่ 2: หาความแตกต่างที่ซ่อนไว้ (Differences)</h4>
                         <div className="w-full max-w-md aspect-[4/3] bg-[#E8F9FF] rounded-2xl overflow-hidden border-2 border-yellow-400">
                           {GAME_QUESTIONS[roomData.currentQuestionIdx].renderSvg(false, null, playersList.flatMap(p => p.foundSpots || []), [])}
                         </div>
@@ -1163,20 +1163,20 @@
 
                     <div className="flex justify-between items-center p-4">
                       <p className="text-sm font-bold text-slate-600">
-                        👁️ ผู้เรียนกำลังมองหาจุดแตกต่างบนลายเส้นการ์ตูนจริง ๆ ในจอมือถืออยู่ขณะนี้!
+                        👁️ ผู้เล่นกำลังมองหาจุดแตกต่างอยู่ขณะนี้!
                       </p>
                       <button
                         onClick={handleAdminNextQuestion}
                         className="bg-yellow-400 hover:bg-yellow-300 text-[#013220] font-bold px-6 py-2.5 rounded-xl text-sm shadow transition flex items-center gap-1"
                       >
-                        <span>{roomData.currentQuestionIdx < GAME_QUESTIONS.length - 1 ? 'ผ่านข้อถัดไป' : 'สรุปคะแนนจัดทีม'}</span>
+                        <span>{roomData.currentQuestionIdx < GAME_QUESTIONS.length - 1 ? 'ข้อถัดไป' : 'สรุปคะแนนจัดทีม'}</span>
                       </button>
                     </div>
 
                     {/* Leaderboard */}
                     <div className="bg-[#FAF7F2] p-5 rounded-2xl border-2 border-[#EADBC8]">
                       <h4 className="text-md font-bold text-[#013220] mb-3 flex items-center gap-2">
-                        🏆 ตารางคะแนนผู้เล่นสด:
+                        🏆 ตารางคะแนนผู้เล่น:
                       </h4>
                       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                         {playersList.slice().sort((a,b) => b.score - a.score).map((p, idx) => (
@@ -1198,7 +1198,7 @@
                   <div className="space-y-6 text-center">
                     <div className="py-4 flex flex-col items-center">
                       <span className="text-6xl block mb-3 animate-gentle-bounce">🏆</span>
-                      <h2 className="text-4xl font-bold text-[#013220]">เฉลี่ยผลจับคู่แบ่งกลุ่มเสร็จสิ้น!</h2>
+                      <h2 className="text-4xl font-bold text-[#013220]">การจับคู่แบ่งกลุ่มเสร็จสิ้น!</h2>
                       <p className="text-sm text-slate-500 mt-2">
                         ผู้เล่นที่ใช้ชื่อนำหน้า "ครู" ถูกสุ่มแจกจ่ายและเฉลี่ยเข้าฝั่ง แดง และ น้ำเงิน ให้เท่ากันเพื่อความสมดุล
                       </p>
@@ -1258,7 +1258,7 @@
                       onClick={handleResetGame}
                       className="bg-[#013220] text-white font-bold px-10 py-4 rounded-2xl text-lg hover:bg-emerald-800 transition shadow-lg inline-flex items-center gap-2"
                     >
-                      <span>🔄 รีเซ็ตสร้างรอบใหม่</span>
+                      <span>เริ่มเกมใหม่</span>
                     </button>
                   </div>
                 )}
@@ -1294,7 +1294,7 @@
                     <span className="text-6xl block animate-gentle-bounce select-none pointer-events-none">⚠️</span>
                     <h3 className="text-2xl font-bold text-[#013220]">ต้องการเข้าร่วมห้อง</h3>
                     <p className="text-sm text-slate-600 leading-relaxed">
-                      กรุณาป้อนรหัสพินห้องและชื่อเล่นของคุณอีกครั้ง หรือรอกรรมการแอดมินเปิดระบบสัญญาณในห้องควบคุมหลักครับ
+                      กรุณาป้อนรหัสพินห้องและชื่อเล่นของคุณอีกครั้ง หรือรอแอดมินเปิดระบบครับ
                     </p>
                     <div className="bg-[#FAF7F2] p-4 rounded-2xl border border-[#EADBC8] space-y-3">
                       <input
@@ -1315,7 +1315,7 @@
                         onClick={handleJoinRoom}
                         className="w-full bg-[#013220] text-white hover:bg-emerald-800 py-2.5 rounded-xl font-bold flex items-center justify-center gap-1 transition"
                       >
-                        🚪 ยืนยันเข้าร่วมห้องอีกครั้ง
+                        เข้าร่วมห้องอีกครั้ง
                       </button>
                     </div>
                   </div>
@@ -1328,7 +1328,7 @@
                       <span className="text-6xl block animate-gentle-bounce select-none pointer-events-none">⏳</span>
                       <h3 className="text-2xl font-bold text-[#013220]">เข้าร่วมห้องแล้ว!</h3>
                       <p className="text-sm text-slate-300">
-                        โปรดจ้องที่หน้าจอโปรเจกเตอร์หน้าห้อง แอดมินกำลังเตรียมกดเริ่มเกม...
+                        โปรดจ้องที่หน้าจอโปรเจกเตอร์หน้าห้อง เกมกำลังจะเริ่ม...
                       </p>
                     </div>
 
@@ -1355,7 +1355,7 @@
                       <div className="relative aspect-[4/3] w-full max-w-xs mx-auto rounded-2xl overflow-hidden border-4 border-slate-300 shadow bg-[#E8F9FF] shrink-0">
                         {GAME_QUESTIONS[roomData.currentQuestionIdx].renderSvg(true, null, [], [])}
                         <div className="absolute top-2 left-2 bg-black/70 text-[9px] text-white px-2 py-0.5 rounded-full font-bold z-10">
-                          1. ภาพวาดต้นฉบับด่านบน (เปรียบเทียบ)
+                          1. ภาพต้นฉบับ
                         </div>
                       </div>
 
@@ -1363,7 +1363,7 @@
                       <div className="relative aspect-[4/3] w-full max-w-xs mx-auto rounded-2xl overflow-hidden border-4 border-yellow-400 shadow-2xl bg-[#E8F9FF] shrink-0">
                         <div className="absolute top-2 left-2 bg-yellow-400 text-[#013220] text-[9px] px-2 py-0.5 rounded-full font-bold z-10 flex items-center gap-1">
                           <span>👆</span>
-                          <span>2. จิ้มความต่างที่ลายเส้นภาพล่างนี้ด่วน! 👇</span>
+                          <span>2. หาความต่างของภาพ! 👇</span>
                         </div>
 
                         {GAME_QUESTIONS[roomData.currentQuestionIdx].renderSvg(
@@ -1390,7 +1390,7 @@
                     <div className="space-y-2 flex flex-col items-center">
                       <span className="text-6xl block animate-gentle-bounce select-none pointer-events-none">🏆</span>
                       <h3 className="text-3xl font-bold text-[#013220]">สรุปผลจัดสรรทีม!</h3>
-                      <p className="text-xs text-slate-500">ตารางแบ่งปันสีทีมของคุณเสร็จสิ้นแล้ว</p>
+                      <p className="text-xs text-slate-500">การแบ่งทีมของคุณเสร็จสิ้นแล้ว</p>
                     </div>
 
                     <div className="my-auto py-8">
@@ -1410,13 +1410,13 @@
 
                       {!myTeam && (
                         <div className="bg-[#FAF7F2] p-6 rounded-3xl border border-[#EADBC8] animate-pulse text-slate-500 flex flex-col items-center gap-2">
-                          <span>⏳ กำลังดึงและเฉลี่ยรายชื่อเข้าสีทีม...</span>
+                          <span>⏳ กำลังแบ่งทีม...</span>
                         </div>
                       )}
                     </div>
 
                     <div className="bg-[#FAF7F2] p-3 rounded-xl text-xs text-slate-600 flex items-center justify-center gap-1 border border-[#EADBC8]">
-                      <span>⭐ พ้อยต์สะสมทั้งหมด:</span>
+                      <span>⭐ คะแนนสะสมทั้งหมด:</span>
                       <span className="font-bold text-yellow-600 text-sm">{playersList.find(p => p.id === user.uid)?.score || 0} pt</span>
                     </div>
 
