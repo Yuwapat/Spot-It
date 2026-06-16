@@ -66,7 +66,7 @@
     const GAME_QUESTIONS = [
       {
         id: 1,
-        title: 'ชายหาด Peppa Pig แสนสนุก 🏖️',
+        title: 'ชายหาดแสนสนุก 🏖️',
         // Differences mapped to exact absolute SVG viewBox space (0-400 width, 0-300 height)
         differences: [
           { id: 101, x: 358, y: 80, label: 'ผลมะพร้าวบนต้นหายไป' },
@@ -199,9 +199,9 @@
         id: 2,
         title: 'อวกาศแฟนตาซี 🚀🪐',
         differences: [
-          { id: 201, x: 100, y: 75, label: 'วงแหวนของดาวเคราะห์หายไป' },
-          { id: 202, x: 300, y: 130, label: 'กระจกหน้าต่างของยานอวกาศหายไป' },
-          { id: 203, x: 200, y: 224, label: 'ดวงดาวระยิบระยับสีเหลืองด้านล่างหายไป' }
+          { id: 201, x: 90, y: 90, label: 'วงแหวนนีออนรอบดาวเคราะห์หายไป' },
+          { id: 202, x: 300, y: 110, label: 'เอเลี่ยนตัวเขียวโบกมือหายไป' },
+          { id: 203, x: 200, y: 220, label: 'พระจันทร์เสี้ยวสีทองดวงใหญ่หายไป' }
         ],
         renderSvg: (isOriginal, onSpotClick, foundSpots, clickMarkers) => {
           return (
@@ -211,48 +211,58 @@
               onClick={onSpotClick}
             >
               {/* Deep Space Background */}
-              <rect width="400" height="300" fill="#0B132B" />
+              <rect width="400" height="300" fill="#0E1525" />
 
               {/* Stars decoration */}
-              <circle cx="80" cy="80" r="1.5" fill="#FFFFFF" opacity="0.6" />
-              <circle cx="320" cy="220" r="1" fill="#FFFFFF" opacity="0.8" />
+              <circle cx="50" cy="50" r="1.5" fill="#FFFFFF" opacity="0.6" />
+              <circle cx="340" cy="240" r="1" fill="#FFFFFF" opacity="0.8" />
               <circle cx="150" cy="40" r="2" fill="#FFFFFF" opacity="0.5" />
-              <circle cx="280" cy="90" r="1.5" fill="#FFFFFF" opacity="0.7" />
+              <circle cx="280" cy="40" r="1.5" fill="#FFFFFF" opacity="0.7" />
 
-              {/* Planet */}
-              <circle cx="100" cy="75" r="30" fill="#FF5E7E" />
-              {/* Ring - Difference 1 */}
+              {/* Planet - Bigger and custom colored */}
+              <circle cx="90" cy="90" r="35" fill="#E94560" />
+              {/* Planet shadow overlay */}
+              <path d="M 90 55 A 35 35 0 0 1 125 90 A 35 35 0 0 1 90 125 Z" fill="#533440" opacity="0.3" />
+              
+              {/* Ring - Difference 1 (Super Bright Cyan Neon Ring) */}
               {(isOriginal || foundSpots?.includes(201)) && (
-                <ellipse cx="100" cy="75" rx="55" ry="12" fill="none" stroke="#FFD200" strokeWidth="6" transform="rotate(-15 100 75)" opacity="0.85" />
+                <ellipse cx="90" cy="90" rx="58" ry="16" fill="none" stroke="#00F0FF" strokeWidth="8" transform="rotate(-18 90 90)" opacity="0.95" />
               )}
-              <circle cx="100" cy="75" r="30" fill="#FF5E7E" clipPath="url(#planet-half)" />
 
-              {/* Rocket / UFO Spaceship */}
-              <g transform="translate(240, 100)">
-                <ellipse cx="60" cy="45" rx="45" ry="20" fill="#86E3CE" />
-                <path d="M 30 40 C 30 20, 90 20, 90 40 Z" fill="#D6E6F2" opacity="0.8" />
-                
-                {/* Window - Difference 2 */}
-                {(isOriginal || foundSpots?.includes(202)) && (
-                  <circle cx="60" cy="30" r="8" fill="#FFD200" stroke="#FF5E7E" strokeWidth="1.5" />
-                )}
-
-                {/* Lights */}
-                <circle cx="35" cy="45" r="3" fill="#FFFFFF" />
-                <circle cx="60" cy="47" r="3" fill="#FFFFFF" />
-                <circle cx="85" cy="45" r="3" fill="#FFFFFF" />
+              {/* Spaceship Rocket - Redesigned to look like a cute cartoon rocket */}
+              <g transform="translate(20, -10)">
+                <path d="M 240 160 L 320 120 L 280 80 Z" fill="#E2F0F9" /> {/* Body */}
+                <path d="M 320 120 L 340 125 L 325 105 Z" fill="#FF2E93" /> {/* Nose cone */}
+                <path d="M 240 160 L 220 190 L 255 175 Z" fill="#FF2E93" /> {/* Tail fin bottom */}
+                <path d="M 280 80 L 260 50 L 295 65 Z" fill="#FF2E93" /> {/* Tail fin top */}
+                {/* Yellow cockpit window */}
+                <circle cx="290" cy="110" r="14" fill="#FFE227" stroke="#333333" strokeWidth="2" />
               </g>
 
-              {/* Yellow twinkling star - Difference 3 */}
-              {(isOriginal || foundSpots?.includes(203)) && (
-                <path d="M 200 240 L 204 228 L 216 224 L 204 220 L 200 208 L 196 220 L 184 224 L 196 228 Z" fill="#FFD200" className="animate-pulse" />
+              {/* Waving Green Alien - Difference 2 (Big, Floating, extremely clear) */}
+              {(isOriginal || foundSpots?.includes(202)) && (
+                <g>
+                  {/* Head */}
+                  <ellipse cx="300" cy="115" rx="18" ry="14" fill="#95E1D3" />
+                  {/* Big Black Eyes */}
+                  <circle cx="293" cy="112" r="4" fill="#000000" />
+                  <circle cx="307" cy="112" r="4" fill="#000000" />
+                  <circle cx="292" cy="110" r="1" fill="#FFFFFF" />
+                  <circle cx="306" cy="110" r="1" fill="#FFFFFF" />
+                  {/* Antenna */}
+                  <path d="M 300 101 Q 295 90 300 85" fill="none" stroke="#95E1D3" strokeWidth="3" />
+                  <circle cx="300" cy="83" r="4.5" fill="#FFE227" />
+                  {/* Body & Clothes */}
+                  <path d="M 288 128 C 288 120, 312 120, 312 128 L 310 142 L 290 142 Z" fill="#6C5CE7" />
+                  {/* Cute Waving Arm */}
+                  <path d="M 312 124 Q 326 112 320 106" fill="none" stroke="#95E1D3" strokeWidth="4.5" strokeLinecap="round" />
+                </g>
               )}
 
-              {/* Alien driver */}
-              <circle cx="300" cy="130" r="12" fill="#95E1D3" />
-              <ellipse cx="295" cy="128" rx="2" ry="4" fill="#000000" />
-              <ellipse cx="305" cy="128" rx="2" ry="4" fill="#000000" />
-              <path d="M 295 136 Q 300 140 305 136" fill="none" stroke="#000000" strokeWidth="1.5" />
+              {/* Giant Golden Crescent Moon - Difference 3 (Super vibrant Yellow-Gold) */}
+              {(isOriginal || foundSpots?.includes(203)) && (
+                <path d="M 185 200 C 220 200, 230 235, 205 250 C 235 240, 230 205, 185 200 Z" fill="#FFE227" stroke="#D8B200" strokeWidth="2.5" />
+              )}
 
               {/* Render found differences */}
               {foundSpots?.map(id => {
@@ -263,8 +273,8 @@
                     key={id}
                     cx={diff.x} 
                     cy={diff.y} 
-                    rx="24" 
-                    ry="18" 
+                    rx="26" 
+                    ry="20" 
                     fill="none" 
                     stroke="#EF4444" 
                     strokeWidth="3.5" 
@@ -278,7 +288,7 @@
               {clickMarkers?.map(marker => (
                 <g key={marker.id}>
                   {marker.isCorrect ? (
-                    <ellipse cx={marker.x} cy={marker.y} rx="24" ry="18" fill="none" stroke="#EF4444" strokeWidth="3.5" />
+                    <ellipse cx={marker.x} cy={marker.y} rx="26" ry="20" fill="none" stroke="#EF4444" strokeWidth="3.5" />
                   ) : (
                     <text x={marker.x} y={marker.y} textAnchor="middle" dominantBaseline="middle" fill="#EF4444" fontSize="22" fontWeight="bold">❌</text>
                   )}
@@ -392,13 +402,13 @@
     ];
 
     const firebaseConfig = {
-  apiKey: "AIzaSyCZjODlm29AmBAzQhLncNG3JwUfVk0CVPk",
-  authDomain: "yes-spot-it.firebaseapp.com",
-  projectId: "yes-spot-it",
-  storageBucket: "yes-spot-it.firebasestorage.app",
-  messagingSenderId: "146234789393",
-  appId: "1:146234789393:web:ed551f9de0f7edd1892bb0",
-  measurementId: "G-SX6MF1XH1D"
+  	apiKey: "AIzaSyCZjODlm29AmBAzQhLncNG3JwUfVk0CVPk",
+  	authDomain: "yes-spot-it.firebaseapp.com",
+  	projectId: "yes-spot-it",
+   	storageBucket: "yes-spot-it.firebasestorage.app",
+  	messagingSenderId: "146234789393",
+  	appId: "1:146234789393:web:ed551f9de0f7edd1892bb0",
+  	measurementId: "G-SX6MF1XH1D"
 };
 
 
@@ -406,7 +416,7 @@
     let isMockDatabase = false;
 
     try {
-      if (!firebaseConfig.apiKey || firebaseConfig.apiKey.includes("YOUR_API_KEY_HERE")) {
+      if (!firebaseConfig.apiKey || firebaseConfig.apiKey.includes("AIzaSyCZjODlm29AmBAzQhLncNG3JwUfVk0CVPk")) {
         throw new Error("API Key is still set to placeholder");
       }
       firebase.initializeApp(firebaseConfig);
@@ -545,8 +555,8 @@
 
         if (type === 'correct') {
           osc.type = 'sine';
-          osc.frequency.setValueAtTime(523.25, ctx.currentTime); // C5
-          osc.frequency.setValueAtTime(659.25, ctx.currentTime + 0.1); // E5
+          osc.frequency.setValueAtTime(523.25, ctx.currentTime);
+          osc.frequency.setValueAtTime(659.25, ctx.currentTime + 0.1);
           gain.gain.setValueAtTime(0.15, ctx.currentTime);
           gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
           osc.start();
@@ -619,7 +629,7 @@
         const roomParam = params.get('room');
         if (roomParam) {
           setRoomCode(roomParam.toUpperCase());
-          setIsScanAccess(true); // Locks admin hide mode, players will only see the join form!
+          setIsScanAccess(true); // Locks admin hide mode
         }
       }, []);
 
@@ -659,7 +669,6 @@
                 setMyTeam(me.team);
               }
               // STRICT BUG FIX 2: Synchronize found spots directly from database profile
-              // This prevents state override during room/admin snapshot updates!
               setFoundSpots(me.foundSpots || []);
             }
           }
@@ -811,7 +820,6 @@
         });
 
         try {
-          // If players exist, write their team divisions in database
           if (playersList.length > 0) {
             const batch = db.batch();
             redTeam.forEach(p => {
@@ -825,7 +833,6 @@
             await batch.commit();
           }
 
-          // In all scenarios, update room state to 'ended' to trigger layout transition!
           const roomDocRef = db.doc(`artifacts/${appId}/public/data/rooms/${roomCode}`);
           await roomDocRef.update({ status: 'ended' });
         } catch (e) {
@@ -873,7 +880,6 @@
         }
       };
 
-      // SVG absolute-click calculation logic (Fixes scaling / miss clicks)
       const handleSpotImageClick = async (e) => {
         if (role !== 'player' || !roomData || roomData.status !== 'playing') return;
 
@@ -900,7 +906,6 @@
             const updatedSpots = [...foundSpots, matchedDiff.id];
             setFoundSpots(updatedSpots);
 
-            // Record click markers in direct SVG absolute coords!
             setClickMarkers((prev) => [
               ...prev,
               { id: matchedDiff.id, x: matchedDiff.x, y: matchedDiff.y, isCorrect: true }
@@ -909,7 +914,6 @@
             const playerDocRef = db.doc(`artifacts/${appId}/public/data/players/${user.uid}`);
             const currentScore = playersList.find(p => p.id === user.uid)?.score || 0;
             
-            // STRICT BUG FIX 2.1: Write foundSpots directly to DB so real-time updates do not reset it to 0
             await playerDocRef.update({ 
               score: currentScore + 100,
               foundSpots: updatedSpots
@@ -995,16 +999,16 @@
                   <div className="bg-[#013220] border-4 border-emerald-700 rounded-3xl p-8 flex flex-col justify-between shadow-2xl text-white">
                     <div className="text-center flex flex-col items-center">
                       <span className="text-7xl block mb-6 animate-gentle-bounce select-none pointer-events-none">🖥️</span>
-                      <h2 className="text-3xl font-bold text-yellow-300 mb-3">หน้าจอแอดมิน</h2>
+                      <h2 className="text-3xl font-bold text-yellow-300 mb-3">สำหรับอแอดมิน</h2>
                       <p className="text-sm text-green-100 mb-6 leading-relaxed">
-                        สร้างห้องควบคุมหลัก ฉายโปรเจกเตอร์หน้าห้อง เพื่อเล่นเกมกับเพื่อน ๆ ของคุณ!
+                        สร้างห้องควบคุมหลัก ฉายโปรเจกเตอร์หน้าห้อง และเล่นเกมกับเพื่อน ๆ ของคุณ!
                       </p>
                     </div>
                     <button
                       onClick={handleCreateRoom}
                       className="w-full bg-yellow-400 hover:bg-yellow-300 text-[#013220] py-4 rounded-2xl font-bold text-lg transition-all shadow-lg"
                     >
-                      สร้างห้องควบคุมใหม่
+                      สร้างห้องใหม่
                     </button>
                   </div>
                 )}
@@ -1014,9 +1018,9 @@
                   <form onSubmit={handleJoinRoom} className="space-y-4">
                     <div className="text-center flex flex-col items-center">
                       <span className="text-7xl block mb-6 animate-gentle-bounce select-none pointer-events-none">📱</span>
-                      <h2 className="text-3xl font-bold text-[#013220] mb-3">จอมือถือผู้เล่น</h2>
+                      <h2 className="text-3xl font-bold text-[#013220] mb-3">สำหรับผู้เล่น</h2>
                       <p className="text-sm text-slate-600 mb-6 leading-relaxed">
-                        กรอกชื่อเล่นของคุณ และยืนยันพินห้องด้านล่างเพื่อเข้าห้องรอล็อบบี้เตรียมจับผิดภาพ!
+                        กรอกชื่อเล่นของคุณ และยืนยันพินห้องเพื่อเข้าห้องล็อบบี้เตรียมจับผิดภาพ!
                       </p>
                     </div>
 
@@ -1074,7 +1078,7 @@
                       </p>
                       
                       <div className="space-y-1">
-                        <label className="text-[10px] text-green-400 font-bold block">🔗 แก้ไขลิงก์ของคุณตรงนี้:</label>
+                        <label className="text-[10px] text-green-400 font-bold block">🔗 แก้ไขลิงก์จริงของคุณตรงนี้:</label>
                         <input 
                           type="text"
                           value={customBaseUrl}
@@ -1150,7 +1154,7 @@
                       </div>
 
                       <div className="bg-[#FFFDF9] border-4 border-yellow-400 rounded-3xl p-4 shadow-xl flex flex-col items-center">
-                        <h4 className="text-md font-bold mb-2 text-yellow-600">ภาพที่ 2: ค้นหาความแตกต่างซ่อนไว้ (Differences)</h4>
+                        <h4 className="text-md font-bold mb-2 text-yellow-600">ภาพที่ 2: หาความแตกต่างที่ซ่อนไว้ (Differences)</h4>
                         <div className="w-full max-w-md aspect-[4/3] bg-[#E8F9FF] rounded-2xl overflow-hidden border-2 border-yellow-400">
                           {GAME_QUESTIONS[roomData.currentQuestionIdx].renderSvg(false, null, playersList.flatMap(p => p.foundSpots || []), [])}
                         </div>
@@ -1165,7 +1169,7 @@
                         onClick={handleAdminNextQuestion}
                         className="bg-yellow-400 hover:bg-yellow-300 text-[#013220] font-bold px-6 py-2.5 rounded-xl text-sm shadow transition flex items-center gap-1"
                       >
-                        <span>{roomData.currentQuestionIdx < GAME_QUESTIONS.length - 1 ? 'ผ่านข้อถัดไป' : 'สรุปคะแนนจัดทีม'}</span>
+                        <span>{roomData.currentQuestionIdx < GAME_QUESTIONS.length - 1 ? 'ข้อถัดไป' : 'สรุปคะแนนจัดทีม'}</span>
                       </button>
                     </div>
 
@@ -1194,7 +1198,7 @@
                   <div className="space-y-6 text-center">
                     <div className="py-4 flex flex-col items-center">
                       <span className="text-6xl block mb-3 animate-gentle-bounce">🏆</span>
-                      <h2 className="text-4xl font-bold text-[#013220]">เฉลี่ยผลจับคู่แบ่งกลุ่มเสร็จสิ้น!</h2>
+                      <h2 className="text-4xl font-bold text-[#013220]">จับคู่แบ่งกลุ่มเสร็จสิ้น!</h2>
                       <p className="text-sm text-slate-500 mt-2">
                         ผู้เล่นที่ใช้ชื่อนำหน้า "ครู" ถูกสุ่มแจกจ่ายและเฉลี่ยเข้าฝั่ง แดง และ น้ำเงิน ให้เท่ากันเพื่อความสมดุล
                       </p>
@@ -1254,7 +1258,7 @@
                       onClick={handleResetGame}
                       className="bg-[#013220] text-white font-bold px-10 py-4 rounded-2xl text-lg hover:bg-emerald-800 transition shadow-lg inline-flex items-center gap-2"
                     >
-                      <span>เล่นเกมใหม่</span>
+                      <span>เล่นเกมรอบใหม่</span>
                     </button>
                   </div>
                 )}
@@ -1323,7 +1327,7 @@
                     <div className="text-center space-y-4">
                       <span className="text-6xl block animate-gentle-bounce select-none pointer-events-none">⏳</span>
                       <h3 className="text-2xl font-bold text-[#013220]">เข้าร่วมห้องแล้ว!</h3>
-                      <p className="text-sm text-slate-600">
+                      <p className="text-sm text-slate-300">
                         โปรดจ้องที่หน้าจอโปรเจกเตอร์หน้าห้อง เกมกำลังจะเริ่ม...
                       </p>
                     </div>
@@ -1351,7 +1355,7 @@
                       <div className="relative aspect-[4/3] w-full max-w-xs mx-auto rounded-2xl overflow-hidden border-4 border-slate-300 shadow bg-[#E8F9FF] shrink-0">
                         {GAME_QUESTIONS[roomData.currentQuestionIdx].renderSvg(true, null, [], [])}
                         <div className="absolute top-2 left-2 bg-black/70 text-[9px] text-white px-2 py-0.5 rounded-full font-bold z-10">
-                          1. ภาพต้นฉบับ (เปรียบเทียบ)
+                          1. ภาพวาดต้นฉบับ
                         </div>
                       </div>
 
@@ -1359,7 +1363,7 @@
                       <div className="relative aspect-[4/3] w-full max-w-xs mx-auto rounded-2xl overflow-hidden border-4 border-yellow-400 shadow-2xl bg-[#E8F9FF] shrink-0">
                         <div className="absolute top-2 left-2 bg-yellow-400 text-[#013220] text-[9px] px-2 py-0.5 rounded-full font-bold z-10 flex items-center gap-1">
                           <span>👆</span>
-                          <span>2. จิ้มความต่างที่ภาพ! 👇</span>
+                          <span>2. หาความต่างของภาพ! 👇</span>
                         </div>
 
                         {GAME_QUESTIONS[roomData.currentQuestionIdx].renderSvg(
@@ -1386,7 +1390,7 @@
                     <div className="space-y-2 flex flex-col items-center">
                       <span className="text-6xl block animate-gentle-bounce select-none pointer-events-none">🏆</span>
                       <h3 className="text-3xl font-bold text-[#013220]">สรุปผลจัดสรรทีม!</h3>
-                      <p className="text-xs text-slate-500">ตารางแบ่งทีมของคุณเสร็จสิ้นแล้ว</p>
+                      <p className="text-xs text-slate-500">แบ่งสีทีมเสร็จสิ้นแล้ว</p>
                     </div>
 
                     <div className="my-auto py-8">
@@ -1399,14 +1403,14 @@
 
                       {myTeam === 'blue' && (
                         <div className="bg-blue-600 border-4 border-blue-400 text-white p-6 rounded-3xl shadow-xl transform -rotate-1">
-                          <span className="text-xs uppercase block tracking-widest text-blue-100 mb-1 font-bold">ทีมของคุณคือ</span>
+                          <span className="text-xs uppercase block tracking-widest text-blue-100 mb-1 font-bold">ฝั่งทีมของคุณคือ</span>
                           <h4 className="text-4xl font-black">🔵 ทีมสีน้ำเงิน</h4>
                         </div>
                       )}
 
                       {!myTeam && (
                         <div className="bg-[#FAF7F2] p-6 rounded-3xl border border-[#EADBC8] animate-pulse text-slate-500 flex flex-col items-center gap-2">
-                          <span>⏳ กำลังแบ่งทีม...</span>
+                          <span>⏳ กำกำลังแบ่งทีม...</span>
                         </div>
                       )}
                     </div>
@@ -1424,7 +1428,7 @@
           </main>
 
           <footer className="bg-[#013220] py-3 text-center text-xs text-slate-300">
-            © 2026 YeS Spot It Game — Yuwapat Early Childhood School
+            ©2026 YeS Spot It Game — Yuwapat Early Childhood School
           </footer>
         </div>
       );
